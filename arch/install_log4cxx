@@ -1,9 +1,0 @@
-#!/bin/bash
-
-cd /tmp/
-sudo -u nobody git clone https://aur.archlinux.org/log4cxx.git
-cd log4cxx
-source PKGBUILD
-pacman -Sy --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
-sudo -u nobody makepkg
-pacman -U --noconfirm log4cxx-*-any.pkg.tar.xz
