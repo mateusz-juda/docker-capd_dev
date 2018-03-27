@@ -17,6 +17,7 @@ RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && local
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 
-#RUN  pacman --noconfirm -S go go-bindata
-ADD install_kubectl /tmp
-RUN /tmp/install_kubectl
+ADD install_aur_pkg /tmp
+RUN cd /tmp && ./install_aur_pkg kubectl-bin
+RUN cd /tmp && ./install_aur_pkg hadoop
+RUN cd /tmp && ./install_aur_pkg apache-spark

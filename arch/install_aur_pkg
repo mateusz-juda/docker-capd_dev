@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+name="$1"
+
+function install_from_aur() {
+    name=$1
+    echo $name
+    sudo -u nobody git clone https://aur.archlinux.org/${name}.git ${name}
+    cd ${name}
+    source PKGBUILD
+    pacman -Sy --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
+    sudo -u nobody makepkg
+    ls -1
+    pacman -U --noconfirm ${name}-*.pkg.tar.*
+}
+
+install_from_aur "${name}"
