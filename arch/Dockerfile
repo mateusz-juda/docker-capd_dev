@@ -17,3 +17,6 @@ RUN cd /tmp && ./install_aur_pkg hadoop
 RUN cd /tmp && ./install_aur_pkg apache-spark
 
 ADD start_scripts /start_scripts
+
+
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S bash-completion

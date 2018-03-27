@@ -2,4 +2,8 @@
 
 echo "$(hostname -i) spark-master" >> /etc/hosts
 
+# We don't want any of the incoming service variables, we'd rather use
+# DNS. But this one interferes directly with Spark.
+unset SPARK_MASTER_PORT
+
 /opt/apache-spark/bin/spark-class org.apache.spark.deploy.master.Master --ip spark-master --port 7077 --webui-port 8080
