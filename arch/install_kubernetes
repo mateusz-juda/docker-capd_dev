@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd /tmp/
+sudo -u nobody git clone https://aur.archlinux.org/kubernetes.git
+cd kubernetes
+source PKGBUILD
+pacman -Sy --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
+
+echo "Patching go version bug"
+sudo -u nobody makepkg -o
+curl -L https://github.com/kubernetes/kubernetes/pull/60494.patch > go_version.patch
+(cd src/kubernetes-1.9.3; patch -p1 < ../../go_version.patch)
+
+sudo -u nobody makepkg -ei
+pacman -U --noconfirm kubernetes-*-any.pkg.tar.xz

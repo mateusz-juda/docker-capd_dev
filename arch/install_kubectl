@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd /tmp/
+sudo -u nobody git clone https://aur.archlinux.org/kubectl-bin.git
+cd kubectl-bin
+source PKGBUILD
+pacman -Sy --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
+sudo -u nobody makepkg
+pacman -U --noconfirm kubectl-bin-*.pkg.tar.xz
