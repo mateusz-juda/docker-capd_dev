@@ -8,5 +8,7 @@ if ! getent hosts spark-master; then
   exit 0
 fi
 
+my_ip="$(hostname -i)"
+
 # Run spark-class directly so that when it exits (or crashes), the pod restarts.
-/opt/apache-spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --webui-port 8081
+/opt/apache-spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --webui-port 8081 --port 7078 --host "${my_ip}"
