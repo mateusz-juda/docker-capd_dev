@@ -19,3 +19,6 @@ RUN cd /tmp && ./install_aur_pkg apache-spark
 ADD start_scripts /start_scripts
 
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S bash-completion
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local.conf
+
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S intel-tbb
