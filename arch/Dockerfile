@@ -24,3 +24,5 @@ ADD start_scripts /start_scripts
 
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local.conf
 
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S blender iproute2
+
