@@ -2,18 +2,27 @@
 
 set -e
 
-name="$1"
-
 function install_from_aur() {
     name=$1
+    repo=$2
+
+    if [ -z "$repo" ]; then
+        repo=$name
+    fi
+    
     echo $name
-    sudo -u nobody git clone https://aur.archlinux.org/${name}.git ${name}
+    git clone https://aur.archlinux.org/${repo}.git ${name}
     cd ${name}
-    source PKGBUILD
-    pacman -Sy --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
-    sudo -u nobody makepkg
-    ls -1
-    pacman -U --noconfirm ${name}-*.pkg.tar.*
+
+    if [ "${name}" == "python-graph-tool" ]; then
+        echo "Patching number of cores for compilation !!!! - MJ"
+        sed -i.bac 's/-j 1/-j 64/' PKGBUILD
+    fi
+    
+    makepkg -sri --noconfirm
+
+    cd ../
+    rm -fr ${name}
 }
 
-install_from_aur "${name}"
+install_from_aur $*
