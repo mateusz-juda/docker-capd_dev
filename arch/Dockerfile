@@ -1,4 +1,4 @@
-FROM base/archlinux:2018.10.01
+FROM base/archlinux:2019.01.01
 MAINTAINER Mateusz Juda <mateusz.juda@gmail.com>
 
 RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
@@ -9,19 +9,18 @@ RUN sed -i -e 's/#MAKEFLAGS="-j2"/MAKEFLAGS=-j'$(nproc)'/' -e 's/xz -c -z/xz -c 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 # tk for spark
-RUN pacman -Syu --noconfirm && pacman --noconfirm -S base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jre8-openjdk intel-tbb tk \
-    htop nethogs iftop \
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk \
+    htop nethogs iftop iproute2 \
     python cython python-pip python-matplotlib python-pipenv python-h5py python-numpy python-protobuf \
     ipython jupyter python-ipywidgets jupyter-widgetsnbextension \
     igraph python-igraph python-networkx \
     eigen linbox flint \
     python-pandas python-scikit-learn python-scipy \
+    python-tensorflow-opt tensorboard \
     parallel \
-    blender iproute2 \
+    blender cgal \
     tmux tmuxp nano emacs vim bash-completion \
-    unzip
-
-RUN pacman --noconfirm -S lsb-release
+    unzip lsb-release
    
 
 RUN useradd --no-create-home --shell=/bin/false build && usermod -L build &&\
@@ -29,14 +28,16 @@ RUN useradd --no-create-home --shell=/bin/false build && usermod -L build &&\
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 ADD install_aur_pkg /tmp
 USER build
-RUN cd /tmp && ./install_aur_pkg python-bz2file # for gensim
-RUN cd /tmp && ./install_aur_pkg python-smart-open
+#RUN cd /tmp && ./install_aur_pkg python-bz2file
+#RUN cd /tmp && ./install_aur_pkg python-smart-open
 #RUN cd /tmp && ./install_aur_pkg python-gensim
 RUN cd /tmp && ./install_aur_pkg log4cxx
 RUN cd /tmp && ./install_aur_pkg kubectl-bin
 RUN cd /tmp && ./install_aur_pkg hadoop
 RUN cd /tmp && ./install_aur_pkg apache-spark
 RUN cd /tmp && ./install_aur_pkg python-graph-tool
+RUN cd /tmp && ./install_aur_pkg miniconda3
+RUN cd /tmp && ./install_aur_pkg or-tools
 
 #RUN cd /tmp && ./install_aur_pkg python-fastparquet
 #RUN cd /tmp && ./install_aur_pkg arrow
@@ -46,18 +47,23 @@ RUN cd /tmp && ./install_aur_pkg python-pyscipopt
 RUN cd /tmp && ./install_aur_pkg python-breathe #for pybind
 RUN cd /tmp && ./install_aur_pkg pybind11
 
-RUN cd /tmp && ./install_aur_pkg intel-mkl intel-parallel-studio-xe
-RUN cd /tmp && ./install_aur_pkg python-numpy-mkl
-RUN cd /tmp && ./install_aur_pkg python-scipy-mkl
-
 RUN cd /tmp && ./install_aur_pkg fasttext
+
+
+#RUN cd /tmp && ./install_aur_pkg intel-mkl intel-parallel-studio-xe
+#RUN cd /tmp && ./install_aur_pkg python-numpy-mkl
+#RUN cd /tmp && ./install_aur_pkg python-scipy-mkl
+
 
 RUN sudo pip install astropy sunpy
 RUN sudo pip install drms
 RUN sudo pip install ortools
 
-
 USER root
+
+
+#RUN pacman --noconfirm -S xpra python-pyqtgraph xorg python-paramiko
+
 
 ADD start_scripts /start_scripts
 
