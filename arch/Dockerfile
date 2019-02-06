@@ -44,8 +44,8 @@ RUN cd /tmp && ./install_aur_pkg or-tools
 RUN cd /tmp && ./install_aur_pkg scipoptsuite
 RUN cd /tmp && ./install_aur_pkg python-pyscipopt
 
-RUN cd /tmp && ./install_aur_pkg python-breathe #for pybind
-RUN cd /tmp && ./install_aur_pkg pybind11
+# RUN cd /tmp && ./install_aur_pkg python-breathe #for pybind
+#RUN cd /tmp && ./install_aur_pkg pybind11
 
 RUN cd /tmp && ./install_aur_pkg fasttext
 
@@ -62,7 +62,7 @@ RUN sudo pip install ortools
 USER root
 
 
-#RUN pacman --noconfirm -S xpra python-pyqtgraph xorg python-paramiko
+RUN pacman --noconfirm -S pybind11  # xpra python-pyqtgraph xorg python-paramiko
 
 
 ADD start_scripts /start_scripts
@@ -71,4 +71,8 @@ RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local.conf
 
 RUN rm -fr "/tmp/*"
 RUN sed -i 's|SPARK_MASTER_IP|#SPARK_MASTER_IP| ; s|SPARK_LOCAL_IP|#SPARK_LOCAL_IP|' /etc/apache-spark/spark-env.sh
+
+RUN userdel build # so no conflict with the Host userids
+
+RUN pacman --noconfirm -Rc python-tensorflow-opt python-tensorflow-serving-api tensorboard && pacman --noconfirm -S python-tensorflow tensorboard
 
