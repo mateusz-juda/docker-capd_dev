@@ -39,7 +39,7 @@ RUN cd /tmp && ./install_aur_pkg log4cxx
 RUN cd /tmp && ./install_aur_pkg kubectl-bin
 # RUN cd /tmp && ./install_aur_pkg hadoop
 #RUN cd /tmp && ./install_aur_pkg apache-spark
-#RUN cd /tmp && ./install_aur_pkg python-graph-tool
+RUN cd /tmp && ./install_aur_pkg python-graph-tool
 #RUN cd /tmp && ./install_aur_pkg miniconda3
 #RUN cd /tmp && ./install_aur_pkg or-tools
 #RUN cd /tmp && ./install_aur_pkg python-watchdog-git
