@@ -9,3 +9,4 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
 	 texlive-most texlive-lang  biber
 
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S  	ghostscript
