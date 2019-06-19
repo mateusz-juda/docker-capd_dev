@@ -75,6 +75,7 @@ RUN sudo pip install kubernetes
 
 USER root
 RUN ln -s /opt_shared/ibm /opt/ibm
+RUN cd /opt && git clone https://github.com/intel/parallelstl.git
 
 ADD start_scripts /start_scripts
 
