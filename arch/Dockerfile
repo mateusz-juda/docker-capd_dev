@@ -13,7 +13,7 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
     base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk \
     pv htop nethogs iftop iproute2 \
-    python cython python-pip python-pytest python-matplotlib python-pipenv python-h5py python-numpy python-protobuf pybind11 \
+    python cython python-pip python-pytest python-matplotlib python-pipenv python-h5py python-netcdf4 python-numpy python-protobuf pybind11 \
     ipython jupyter python-ipywidgets jupyter-widgetsnbextension python-gobject \
     igraph python-igraph python-networkx \
     eigen linbox flint \
