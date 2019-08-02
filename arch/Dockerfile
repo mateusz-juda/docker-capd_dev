@@ -22,7 +22,7 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     python-pydot graphviz \
     python-celery rabbitmq rabbitmqadmin \
     parallel \
-    blender cgal \
+    blender cgal opencv \
     tmux tmuxp nano emacs vim bash-completion \
     unzip lsb-release
    
