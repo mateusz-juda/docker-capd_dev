@@ -12,6 +12,7 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
     pv htop nethogs iftop iproute2  parallel \
     base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk python \
+    llvm-libs \
     eigen linbox flint \
     blender \
     opencv \
@@ -36,12 +37,29 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     ipython jupyter python-ipywidgets jupyter-widgetsnbextension python-gobject \
     igraph python-igraph python-networkx \
     python-pandas python-scikit-learn \
-    python-tensorflow-opt tensorboard \
     python-pydot graphviz \
     python-celery rabbitmq rabbitmqadmin
 
 
+
 USER build
+ADD install_aur_pkg /tmp
+ADD pkgs /tmp/pkgs
+RUN cd /tmp && ./install_aur_pkg nvidia-utils-430 "x" /tmp/pkgs
+
+USER root
+
+RUN pacman --noconfirm -U \
+     https://archive.archlinux.org/packages/t/tensorflow-opt-cuda/tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz \
+     https://archive.archlinux.org/packages/p/python-tensorflow-opt-cuda/python-tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz
+#RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
+#    python-tensorflow-opt-cuda
+    
+USER build
+RUN cd /tmp && ./install_aur_pkg python-mpld3
+RUN cd /tmp && ./install_aur_pkg python-llvmlite
+RUN cd /tmp && ./install_aur_pkg python-numba
+
 #RUN cd /tmp && ./install_aur_pkg python-bz2file
 #RUN cd /tmp && ./install_aur_pkg python-smart-open
 #RUN cd /tmp && ./install_aur_pkg python-gensim
@@ -57,7 +75,7 @@ RUN cd /tmp && ./install_aur_pkg kubectl-bin
 
 #RUN cd /tmp && ./install_aur_pkg python-fastparquet
 #RUN cd /tmp && ./install_aur_pkg arrow
-RUN cd /tmp && ./install_aur_pkg scipoptsuite
+#RUN cd /tmp && ./install_aur_pkg scipoptsuite
 #RUN cd /tmp && ./install_aur_pkg python-pyscipopt
 
 # RUN cd /tmp && ./install_aur_pkg python-breathe #for pybind
@@ -85,6 +103,7 @@ RUN sudo pip install sktime
 
 
 USER root
+
 RUN ln -s /opt_shared/ibm /opt/ibm
 RUN cd /opt && git clone https://github.com/intel/parallelstl.git
 

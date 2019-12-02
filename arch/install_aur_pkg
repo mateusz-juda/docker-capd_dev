@@ -5,13 +5,18 @@ set -e
 function install_from_aur() {
     name=$1
     repo=$2
-
+    pkg_path=$3
+    
     if [ -z "$repo" ]; then
         repo=$name
     fi
     
     echo $name
-    git clone https://aur.archlinux.org/${repo}.git ${name}
+    if [ -n "$pkg_path" ]; then
+        cp -fr  "$pkg_path/${name}" ${name}
+    else
+        git clone https://aur.archlinux.org/${repo}.git ${name}
+    fi
     cd ${name}
 
     if [ "${name}" == "python-graph-tool" ]; then
