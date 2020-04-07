@@ -8,29 +8,39 @@ RUN sed -i -e 's/#MAKEFLAGS="-j2"/MAKEFLAGS=-j'$(nproc)'/' -e 's/xz -c -z/xz -c 
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-# tk for spark
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
-    base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk \
-    pv htop nethogs iftop iproute2 \
-    python cython python-pip python-pytest python-matplotlib python-pipenv python-h5py python-numpy python-protobuf pybind11 \
-    ipython jupyter python-ipywidgets jupyter-widgetsnbextension python-gobject \
-    igraph python-igraph python-networkx \
+    pv htop nethogs iftop iproute2  parallel \
+    base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk python \
     eigen linbox flint \
-    python-pandas python-scikit-learn python-scipy \
-    python-tensorflow-opt tensorboard \
-    python-pydot graphviz \
-    python-celery rabbitmq rabbitmqadmin \
-    parallel \
-    blender cgal \
+    blender \
+    opencv \
     tmux tmuxp nano emacs vim bash-completion \
     unzip lsb-release
-   
 
 RUN useradd --no-create-home --shell=/bin/false build && usermod -L build &&\
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 ADD install_aur_pkg /tmp
+USER build
+#RUN cd /tmp && ./install_aur_pkg intel-mkl
+#RUN cd /tmp && ./install_aur_pkg python-numpy-mkl
+#RUN cd /tmp && ./install_aur_pkg python-scipy-mkl
+
+USER root
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
+    cython python-pip python-pytest \
+    python-numpy \
+    python-scipy \
+    python-matplotlib python-pipenv python-h5py python-netcdf4 python-protobuf pybind11 \
+    ipython jupyter python-ipywidgets jupyter-widgetsnbextension python-gobject \
+    igraph python-igraph python-networkx \
+    python-pandas python-scikit-learn \
+    python-tensorflow-opt tensorboard \
+    python-pydot graphviz \
+    python-celery rabbitmq rabbitmqadmin
+
+
 USER build
 #RUN cd /tmp && ./install_aur_pkg python-bz2file
 #RUN cd /tmp && ./install_aur_pkg python-smart-open
@@ -62,7 +72,8 @@ RUN sudo pip install drms
 RUN sudo pip install ortools
 RUN sudo pip install dionysus
 RUN sudo pip install kubernetes
-
+RUN sudo pip install sktime
+# RUN sudo pip install PyWavelets
 
 # apache kafka
 #RUN cd /tmp && ./install_aur_pkg zookeeper
@@ -85,4 +96,3 @@ RUN rm -fr "/tmp/*"
 #RUN sed -i 's|SPARK_MASTER_IP|#SPARK_MASTER_IP| ; s|SPARK_LOCAL_IP|#SPARK_LOCAL_IP|' /etc/apache-spark/spark-env.sh
 
 RUN userdel build # so no conflict with the Host userids
-
