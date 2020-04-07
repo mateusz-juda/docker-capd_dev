@@ -7,5 +7,5 @@ RUN sed -i -e 's/#MAKEFLAGS="-j2"/MAKEFLAGS=-j'$(nproc)'/' -e 's/xz -c -z/xz -c 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
-	 texlive-most texlive-lang  biber ghostscript imagemagick
+	 sagemath
 
