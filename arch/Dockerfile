@@ -11,59 +11,66 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
     pv htop nethogs iftop iproute2  parallel \
-    base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk python \
+    base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk \
     llvm-libs \
-    eigen linbox flint \
-    blender \
-    opencv \
+    eigen linbox flint log4cxx \
+    blender opencv \
     tmux tmuxp nano emacs vim bash-completion \
     unzip lsb-release
 
-RUN useradd --no-create-home --shell=/bin/false build && usermod -L build &&\
+RUN useradd  --shell=/bin/false build && usermod -L build &&\
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    
 ADD install_aur_pkg /tmp
 USER build
-#RUN cd /tmp && ./install_aur_pkg intel-mkl
-#RUN cd /tmp && ./install_aur_pkg python-numpy-mkl
-#RUN cd /tmp && ./install_aur_pkg python-scipy-mkl
 
 USER root
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     cython python-pip python-pytest \
+    python \
     python-numpy \
     python-scipy \
     python-matplotlib python-pipenv python-h5py python-netcdf4 python-protobuf pybind11 \
     ipython jupyter python-ipywidgets jupyter-widgetsnbextension python-gobject \
     igraph python-igraph python-networkx \
     python-pandas python-scikit-learn \
+    python-zeep python-beautifulsoup4\
     python-pydot graphviz \
+    python-arrow python-construct \
     python-celery rabbitmq rabbitmqadmin
-
-
 
 USER build
 ADD install_aur_pkg /tmp
 ADD pkgs /tmp/pkgs
 RUN cd /tmp && ./install_aur_pkg nvidia-utils-430 "x" /tmp/pkgs
 
-USER root
 
-RUN pacman --noconfirm -U \
-     https://archive.archlinux.org/packages/t/tensorflow-opt-cuda/tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz \
-     https://archive.archlinux.org/packages/p/python-tensorflow-opt-cuda/python-tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz
-#RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
-#    python-tensorflow-opt-cuda
-    
+#RUN pacman --noconfirm -U \
+#      https://archive.archlinux.org/packages/t/tensorflow-opt-cuda/tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz \
+#      https://archive.archlinux.org/packages/p/python-tensorflow-opt-cuda/python-tensorflow-opt-cuda-1.14.0-2-x86_64.pkg.tar.xz
+
+
+#RUN pacman -Syu --noconfirm && pacman --noconfirm -S python-tensorflow-opt-cuda
+
+#RUN pacman -Syu --noconfirm && pacman --noconfirm -S tensorflow-opt-cuda python-tensorflow-opt-cuda
+#RUN python -c 'import tensorflow as tf;print(tf)'
+
+
+
 USER build
-RUN cd /tmp && ./install_aur_pkg python-mpld3
-RUN cd /tmp && ./install_aur_pkg python-llvmlite
-RUN cd /tmp && ./install_aur_pkg python-numba
+RUN cd /tmp && ./install_aur_pkg python-pyviz_comms
+RUN cd /tmp && ./install_aur_pkg python-holoviews
+RUN cd /tmp && ./install_aur_pkg python-bokeh
+
+#RUN cd /tmp && ./install_aur_pkg python-mpld3
+#RUN cd /tmp && ./install_aur_pkg python-llvmlite
+#RUN cd /tmp && ./install_aur_pkg python-numba
 
 #RUN cd /tmp && ./install_aur_pkg python-bz2file
 #RUN cd /tmp && ./install_aur_pkg python-smart-open
 #RUN cd /tmp && ./install_aur_pkg python-gensim
-RUN cd /tmp && ./install_aur_pkg log4cxx
+#RUN cd /tmp && ./install_aur_pkg log4cxx
 RUN cd /tmp && ./install_aur_pkg kubectl-bin
 # RUN cd /tmp && ./install_aur_pkg hadoop
 #RUN cd /tmp && ./install_aur_pkg apache-spark
@@ -87,11 +94,10 @@ RUN cd /tmp && ./install_aur_pkg ann
 
 RUN sudo pip install astropy sunpy
 RUN sudo pip install drms
-RUN sudo pip install ortools
+#RUN sudo pip install ortools
 RUN sudo pip install dionysus
 RUN sudo pip install kubernetes
 RUN sudo pip install sktime
-# RUN sudo pip install PyWavelets
 
 # apache kafka
 #RUN cd /tmp && ./install_aur_pkg zookeeper
@@ -115,3 +121,4 @@ RUN rm -fr "/tmp/*"
 #RUN sed -i 's|SPARK_MASTER_IP|#SPARK_MASTER_IP| ; s|SPARK_LOCAL_IP|#SPARK_LOCAL_IP|' /etc/apache-spark/spark-env.sh
 
 RUN userdel build # so no conflict with the Host userids
+
