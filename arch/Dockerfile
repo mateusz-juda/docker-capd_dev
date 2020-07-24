@@ -11,10 +11,10 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
     pv htop nethogs iftop iproute2  parallel \
-    base-devel clang cmake boost mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk intel-tbb tk \
+    base-devel clang cmake boost intel-tbb mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk tk \
     llvm-libs \
-    eigen linbox flint log4cxx \
-    blender opencv \
+    eigen flint log4cxx \
+    opencv \
     tmux tmuxp nano emacs vim bash-completion \
     unzip lsb-release
 
@@ -40,6 +40,9 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     python-arrow python-construct \
     python-celery rabbitmq rabbitmqadmin
 
+RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
+    python-pytorch-opt
+
 USER build
 ADD install_aur_pkg /tmp
 ADD pkgs /tmp/pkgs
@@ -59,10 +62,6 @@ RUN cd /tmp && ./install_aur_pkg nvidia-utils-430 "x" /tmp/pkgs
 
 
 USER build
-RUN cd /tmp && ./install_aur_pkg python-pyviz_comms
-RUN cd /tmp && ./install_aur_pkg python-holoviews
-RUN cd /tmp && ./install_aur_pkg python-bokeh
-
 #RUN cd /tmp && ./install_aur_pkg python-mpld3
 #RUN cd /tmp && ./install_aur_pkg python-llvmlite
 #RUN cd /tmp && ./install_aur_pkg python-numba
@@ -107,11 +106,17 @@ RUN sudo pip install sktime
 #RUN cd /tmp && ./install_aur_pkg cppkafka-git
 #RUN cd /tmp && ./install_aur_pkg kafkacat-git
 
+RUN cd /tmp && ./install_aur_pkg python-pyviz_comms
+
+#RUN cd /tmp && ./install_aur_pkg python-holoviews # old version, 1.12, use pip
+#RUN cd /tmp && ./install_aur_pkg python-bokeh
+RUN sudo pip install holoviews
+
 
 USER root
 
 RUN ln -s /opt_shared/ibm /opt/ibm
-RUN cd /opt && git clone https://github.com/intel/parallelstl.git
+#RUN cd /opt && git clone https://github.com/intel/parallelstl.git
 
 ADD start_scripts /start_scripts
 
