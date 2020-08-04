@@ -46,7 +46,7 @@ RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
 USER build
 ADD install_aur_pkg /tmp
 ADD pkgs /tmp/pkgs
-RUN cd /tmp && ./install_aur_pkg nvidia-utils-430 "x" /tmp/pkgs
+#RUN cd /tmp && ./install_aur_pkg nvidia-utils-430 "x" /tmp/pkgs
 
 
 #RUN pacman --noconfirm -U \
@@ -70,7 +70,7 @@ USER build
 #RUN cd /tmp && ./install_aur_pkg python-smart-open
 #RUN cd /tmp && ./install_aur_pkg python-gensim
 #RUN cd /tmp && ./install_aur_pkg log4cxx
-RUN cd /tmp && ./install_aur_pkg kubectl-bin
+#RUN cd /tmp && ./install_aur_pkg kubectl-bin
 # RUN cd /tmp && ./install_aur_pkg hadoop
 #RUN cd /tmp && ./install_aur_pkg apache-spark
 #RUN cd /tmp && ./install_aur_pkg python-graph-tool
@@ -95,8 +95,8 @@ RUN sudo pip install astropy sunpy
 RUN sudo pip install drms
 #RUN sudo pip install ortools
 RUN sudo pip install dionysus
-RUN sudo pip install kubernetes
-RUN sudo pip install sktime
+#RUN sudo pip install kubernetes
+#RUN sudo pip install sktime
 
 # apache kafka
 #RUN cd /tmp && ./install_aur_pkg zookeeper

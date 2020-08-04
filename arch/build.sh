@@ -2,9 +2,9 @@
 
 set -e
 
-ver="1.9.6"
+ver="1.9.7"
 registry="registry.capdnet.ii.uj.edu.pl:5000/capd/dev:${ver}"
-docker build . -t "${registry}"
+docker build --pull . -t "${registry}"
 
 path="/mnt/remote/capdnet_shared/cloud/singularity/"
 
