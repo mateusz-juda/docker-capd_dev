@@ -2,7 +2,7 @@
 
 set -e
 
-ver="1.9.7"
+ver="1.10.0"
 registry="registry.capdnet.ii.uj.edu.pl:5000/capd/dev:${ver}"
 docker build --pull . -t "${registry}"
 

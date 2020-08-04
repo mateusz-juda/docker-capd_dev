@@ -11,7 +11,7 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN pacman -Syu --noconfirm && pacman --noconfirm -S \
     inetutils iputils \
     pv htop nethogs iftop iproute2  parallel \
-    base-devel clang cmake boost intel-tbb mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk tk \
+    base-devel clang cmake boost intel-tbb mpfr swig ninja valgrind protobuf git gdb ack jdk8-openjdk tk gperftools \
     llvm-libs \
     eigen flint log4cxx \
     opencv \
