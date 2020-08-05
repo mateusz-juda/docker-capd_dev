@@ -20,6 +20,10 @@ echo "Creating ${sing_img}"
 #export DOCKER_TMPDIR=$HOME/tmp
 
 singularity build ${sing_img} "docker-daemon://${registry}"
+singularity build --sandbox  ${sing_img}.sandbox  ${sing_img}
+tar cf ${sing_img}.sandbox.tar ${sing_img}.sandbox
+rsync   ${sing_img}.sandbox.tar rm.c:/mnt/remote/capdnet_shared/cloud/singularity/
 
-docker push  "${registry}"
+echo "ssh rm.c, cd singularity, tar xf ${sing_img}.sandbox.tar, singularity build ${sing_img} ${sing_img}.sandbox"
+#docker push  "${registry}"
 
