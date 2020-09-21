@@ -63,8 +63,8 @@ ADD pkgs /tmp/pkgs
 
 USER build
 #RUN cd /tmp && ./install_aur_pkg python-mpld3
-#RUN cd /tmp && ./install_aur_pkg python-llvmlite
-#RUN cd /tmp && ./install_aur_pkg python-numba
+RUN cd /tmp && ./install_aur_pkg python-llvmlite
+RUN cd /tmp && ./install_aur_pkg python-numba
 
 #RUN cd /tmp && ./install_aur_pkg python-bz2file
 #RUN cd /tmp && ./install_aur_pkg python-smart-open
